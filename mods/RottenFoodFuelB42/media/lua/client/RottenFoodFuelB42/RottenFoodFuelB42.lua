@@ -31,8 +31,7 @@ function RottenFoodFuelB42.isRottenFood(item)
         return false
     end
 
-    local isFood = false
-    isFood = isInstanceOf(item, "Food")
+    local isFood = isInstanceOf(item, "Food")
     if not isFood and type(item.IsFood) == "function" then
         isFood = item:IsFood()
     end
