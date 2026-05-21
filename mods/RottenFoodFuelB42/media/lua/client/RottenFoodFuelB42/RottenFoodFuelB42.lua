@@ -6,7 +6,7 @@ RottenFoodFuelB42.MIN_FUEL_MINUTES = 5
 -- Keep very heavy rotten food from producing excessive burn times.
 RottenFoodFuelB42.MAX_FUEL_MINUTES = 90
 RottenFoodFuelB42.MINUTES_PER_WEIGHT = 15
-RottenFoodFuelB42._minimumRegisteredFuelHours = 1 / 60
+RottenFoodFuelB42.ONE_MINUTE_IN_HOURS = 1 / 60
 
 local function clamp(value, minValue, maxValue)
     if value < minValue then
@@ -18,8 +18,12 @@ local function clamp(value, minValue, maxValue)
     return value
 end
 
+local function isInstanceOf(item, className)
+    return type(instanceof) == "function" and instanceof(item, className)
+end
+
 local function isNonEmptyContainer(item)
-    return type(instanceof) == "function" and instanceof(item, "InventoryContainer") and item:getInventory() and not item:getInventory():isEmpty()
+    return isInstanceOf(item, "InventoryContainer") and item:getInventory() and not item:getInventory():isEmpty()
 end
 
 function RottenFoodFuelB42.isRottenFood(item)
@@ -28,9 +32,7 @@ function RottenFoodFuelB42.isRottenFood(item)
     end
 
     local isFood = false
-    if type(instanceof) == "function" then
-        isFood = instanceof(item, "Food")
-    end
+    isFood = isInstanceOf(item, "Food")
     if not isFood and type(item.IsFood) == "function" then
         isFood = item:IsFood()
     end
@@ -68,7 +70,7 @@ local function registerRottenFoodType(item)
     end
 
     if campingFuelType[itemType] == nil or campingFuelType[itemType] <= 0 then
-        campingFuelType[itemType] = RottenFoodFuelB42._minimumRegisteredFuelHours
+        campingFuelType[itemType] = RottenFoodFuelB42.ONE_MINUTE_IN_HOURS
     end
 end
 
