@@ -1,0 +1,6 @@
+name=RottenFoodFuelB42
+id=RottenFoodFuelB42
+description=Allows rotten food to be used as fuel in Build 42 heat sources, with burn time based on item weight.
+poster=poster.png
+version=1.0.0
+authors=usersuber
