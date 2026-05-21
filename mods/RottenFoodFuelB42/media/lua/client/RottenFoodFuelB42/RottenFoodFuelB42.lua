@@ -3,9 +3,10 @@ require "Camping/ISUI/ISCampingMenu"
 RottenFoodFuelB42 = RottenFoodFuelB42 or {}
 
 RottenFoodFuelB42.MIN_FUEL_MINUTES = 5
+-- Keep very heavy rotten food from producing excessive burn times.
 RottenFoodFuelB42.MAX_FUEL_MINUTES = 90
 RottenFoodFuelB42.MINUTES_PER_WEIGHT = 15
-RottenFoodFuelB42._registeredFuelHours = 1 / 60
+RottenFoodFuelB42._minimumRegisteredFuelHours = 1 / 60
 
 local function clamp(value, minValue, maxValue)
     if value < minValue then
@@ -67,7 +68,7 @@ local function registerRottenFoodType(item)
     end
 
     if campingFuelType[itemType] == nil or campingFuelType[itemType] <= 0 then
-        campingFuelType[itemType] = RottenFoodFuelB42._registeredFuelHours
+        campingFuelType[itemType] = RottenFoodFuelB42._minimumRegisteredFuelHours
     end
 end
 
@@ -76,12 +77,6 @@ local function canUseAsFuel(item)
         return false
     end
     if type(item.isFavorite) == "function" and item:isFavorite() then
-        return false
-    end
-    if type(item.IsClothing) == "function" and item:IsClothing() and type(item.isEquipped) == "function" and item:isEquipped() then
-        return false
-    end
-    if type(item.IsClothing) == "function" and item:IsClothing() and type(item.getFabricType) == "function" and not item:getFabricType() then
         return false
     end
     if isNonEmptyContainer(item) then
